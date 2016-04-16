@@ -76,13 +76,19 @@ var CARRO = (function() {
     }
 
     function clickAdicionarCarro(evento) {
-        console.log('clickAdicionarCarro');
         evento.preventDefault();
         var carro = novoCarro();
         if (preenchimentoCorreto()) {
             adicionarCarro(carro);
             limpaFormCarro();
             mostraCarrosNatela();
+
+            new PNotify({
+                title: 'Carro',
+                text: 'Salvo com sucesso.',
+                type: 'success'
+            });
+
         } else {
             mostraMensagemDePreenchimentoIncorreto();
         }
@@ -90,13 +96,16 @@ var CARRO = (function() {
 
     function mostraMensagemDePreenchimentoIncorreto() {
         camposInvalidos = document.querySelectorAll('#formNovoCarro .form-control:invalid');
-        mensagem = "Campos Preenchidos Incorretamente: \n\n";
+         mensagem = "Campos Preenchidos Incorretamente: \n\n";
         for (var i = 0, length = camposInvalidos.length; i < length; i++) {
             campo = camposInvalidos[i];
             label = document.querySelector('#formNovoCarro label[for=' + campo.id + ']').innerText;
             mensagem = mensagem + label + ":  " + campo.validationMessage + "\n";
         }
-        alert(mensagem);
+        new PNotify({
+            title: 'Campos Obrigatórios',
+            text: mensagem
+        });
     }
 
     function preenchimentoCorreto() {
@@ -109,11 +118,49 @@ var CARRO = (function() {
         idDaLista = descobreIdNoArrayDeCarros(evento);
         carroAExcluir = carros[idDaLista];
         if (carroEmEdicao == carroAExcluir) {
-            desejaExcluir = confirm('Este carro está em edição. Tem certeza que deseja excluir?');
-            if (desejaExcluir)
-                limpaFormCarro();
+            desejaExcluir = new PNotify({
+                title: 'Excluir Carro',
+                text: 'Este carro está em edição. Tem certeza que deseja excluir?',
+                icon: 'glyphicon glyphicon-question-sign',
+                hide: false,
+                confirm: {
+                    confirm: true
+                },
+                buttons: {
+                    closer: false,
+                    sticker: false
+                },
+                history: {
+                    history: false
+                }
+            }).get().on('pnotify.confirm', function(){
+                alert('Excluído com sucesso.');
+            }).on('pnotify.cancel', function(){
+                alert('Exclusão cancelada.');
+            });
+             if (desejaExcluir)
+                 limpaFormCarro();
         } else {
-            desejaExcluir = confirm('Tem certeza que deseja excluir?');
+            desejaExcluir = new PNotify({
+                title: 'Excluir Carro',
+                text: 'Tem certeza que deseja excluir?',
+                icon: 'glyphicon glyphicon-question-sign',
+                hide: false,
+                confirm: {
+                    confirm: true
+                },
+                buttons: {
+                    closer: false,
+                    sticker: false
+                },
+                history: {
+                    history: false
+                }
+            }).get().on('pnotify.confirm', function(){
+                alert('Excluído com sucesso.');
+            }).on('pnotify.cancel', function(){
+                alert('Exclusão cancelada.');
+            });
         }
 
         if (desejaExcluir) {
@@ -123,7 +170,6 @@ var CARRO = (function() {
     }
 
     function clickEditarCarro(evento) {
-        console.log('clickEditarCarro');
         evento.preventDefault();
         idDaLista = descobreIdNoArrayDeCarros(evento);
         carroEmEdicao = carros[idDaLista];
@@ -134,13 +180,11 @@ var CARRO = (function() {
     }
 
     function clickCancelarCarro(evento) {
-        console.log('clickCancelarCarro');
         evento.preventDefault();
         limpaFormCarro();
     }
 
     function clickSalvarCarro(evento) {
-        console.log('clickSalvarCarro');
         evento.preventDefault();
         salvarEdicao(carroEmEdicao);
         limpaFormCarro();

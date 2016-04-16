@@ -82,13 +82,18 @@ var SIMULACAO = (function(){
     }
 
     function clickAdicionarSimulacao (evento){
-        console.log('clickAdicionarSimulacao');
         evento.preventDefault();
         var simulacao = novaSimulacao();
         if( preenchimentoCorreto() ){
             adicionarSimulacao(simulacao);
             limpaFormSimulacao();
             mostraSimulacoesNatela();
+
+            new PNotify({
+                title: 'Simulação',
+                text: 'Salvo com sucesso.',
+                type: 'success'
+            });
         }else{
             mostraMensagemDePreenchimentoIncorreto();
         }
@@ -102,7 +107,10 @@ var SIMULACAO = (function(){
             label = document.querySelector('#formNovaSimulacao label[for='+campo.id+']').innerText;
             mensagem = mensagem + label + ":  "+ campo.validationMessage + "\n";
         }
-        alert(mensagem);
+        new PNotify({
+            title: 'Campos Obrrigatórios',
+            text: mensagem
+        });
     }
 
     function preenchimentoCorreto(){
@@ -110,16 +118,53 @@ var SIMULACAO = (function(){
     }
 
     function clickExcluirSimulacao (evento){
-        console.log('clickExcluirSimulacao');
         evento.preventDefault();
         idDaLista = descobreIdNoArrayDeSimulacoes(evento);
         simulacaoAExcluir = simulacoes[idDaLista];
         if( simulacaoEmEdicao == simulacaoAExcluir ){
-            desejaExcluir = confirm('Esta simulação está em edição. Tem certeza que deseja excluir?');
+            desejaExcluir = new PNotify({
+                title: 'Excluir Simulação',
+                text: 'Esta simulação está em edição. Tem certeza que deseja excluir?',
+                icon: 'glyphicon glyphicon-question-sign',
+                hide: false,
+                confirm: {
+                    confirm: true
+                },
+                buttons: {
+                    closer: false,
+                    sticker: false
+                },
+                history: {
+                    history: false
+                }
+            }).get().on('pnotify.confirm', function(){
+                alert('Excluído com sucesso.');
+            }).on('pnotify.cancel', function(){
+                alert('Exclusão cancelada.');
+            });
             if(desejaExcluir)
                 limpaFormSimulacao();
         }else{
-            desejaExcluir = confirm('Tem certeza que deseja excluir?');
+            desejaExcluir = new PNotify({
+                title: 'Excluir Carro',
+                text: 'Tem certeza que deseja excluir?',
+                icon: 'glyphicon glyphicon-question-sign',
+                hide: false,
+                confirm: {
+                    confirm: true
+                },
+                buttons: {
+                    closer: false,
+                    sticker: false
+                },
+                history: {
+                    history: false
+                }
+            }).get().on('pnotify.confirm', function(){
+                alert('Excluído com sucesso.');
+            }).on('pnotify.cancel', function(){
+                alert('Exclusão cancelada.');
+            });
         }
         
         if( desejaExcluir ){
@@ -129,7 +174,6 @@ var SIMULACAO = (function(){
     }
 
     function clickEditarSimulacao (evento){
-        console.log('clickEditarSimulacao');
         evento.preventDefault();
         idDaLista = descobreIdNoArrayDeSimulacoes(evento);
         simulacaoEmEdicao = simulacoes[idDaLista];
@@ -140,13 +184,11 @@ var SIMULACAO = (function(){
     }
 
     function clickCancelarSimulacao (evento){
-        console.log('clickCancelarSimulacao');
         evento.preventDefault();
         limpaFormSimulacao();
     }  
 
     function clickSalvarSimulacao (evento){
-        console.log('clickSalvarSimulacao');
         evento.preventDefault();
         salvarEdicao(simulacaoEmEdicao);
         limpaFormSimulacao();

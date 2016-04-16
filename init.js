@@ -16,10 +16,12 @@ function init(){
 	});
 	loadScript('tpc.js', function(){
 		loadScript('carros.js', function(){
-			loadScript('simulacoes.js', function() {
+			loadScript('geolocalizacao.js', function(){
+				loadScript('simulacoes.js', function() {
 					CARRO.init();
 					CARRO.carregaTela();
 					SIMULACAO.init(CARRO.getCarros());
+				});
 			});
 		});
 	});

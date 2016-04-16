@@ -76,13 +76,14 @@ var CARRO = (function() {
     }
 
     function clickAdicionarCarro(evento) {
+        console.log('clickAdicionarCarro');
         evento.preventDefault();
         var carro = novoCarro();
         if (preenchimentoCorreto()) {
             adicionarCarro(carro);
             limpaFormCarro();
             mostraCarrosNatela();
-
+            
             new PNotify({
                 title: 'Carro',
                 text: 'Salvo com sucesso.',
@@ -96,16 +97,13 @@ var CARRO = (function() {
 
     function mostraMensagemDePreenchimentoIncorreto() {
         camposInvalidos = document.querySelectorAll('#formNovoCarro .form-control:invalid');
-         mensagem = "Campos Preenchidos Incorretamente: \n\n";
+        mensagem = "Campos Preenchidos Incorretamente: \n\n";
         for (var i = 0, length = camposInvalidos.length; i < length; i++) {
             campo = camposInvalidos[i];
             label = document.querySelector('#formNovoCarro label[for=' + campo.id + ']').innerText;
             mensagem = mensagem + label + ":  " + campo.validationMessage + "\n";
         }
-        new PNotify({
-            title: 'Campos Obrigatórios',
-            text: mensagem
-        });
+        alert(mensagem);
     }
 
     function preenchimentoCorreto() {
@@ -138,8 +136,8 @@ var CARRO = (function() {
             }).on('pnotify.cancel', function(){
                 alert('Exclusão cancelada.');
             });
-             if (desejaExcluir)
-                 limpaFormCarro();
+            if (desejaExcluir)
+                limpaFormCarro();
         } else {
             desejaExcluir = new PNotify({
                 title: 'Excluir Carro',
@@ -170,6 +168,7 @@ var CARRO = (function() {
     }
 
     function clickEditarCarro(evento) {
+        console.log('clickEditarCarro');
         evento.preventDefault();
         idDaLista = descobreIdNoArrayDeCarros(evento);
         carroEmEdicao = carros[idDaLista];
@@ -180,11 +179,13 @@ var CARRO = (function() {
     }
 
     function clickCancelarCarro(evento) {
+        console.log('clickCancelarCarro');
         evento.preventDefault();
         limpaFormCarro();
     }
 
     function clickSalvarCarro(evento) {
+        console.log('clickSalvarCarro');
         evento.preventDefault();
         salvarEdicao(carroEmEdicao);
         limpaFormCarro();

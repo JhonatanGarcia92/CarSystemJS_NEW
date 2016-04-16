@@ -9,8 +9,10 @@
     <script type="text/javascript" src="init.js"></script>
     <script type="text/javascript" src="lib/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1Bxz1GSOGFuzJZkKglsL13o4p-Gmketw" async defer></script>
     <script type="text/javascript" src="lib/dist/pnotify.custom.min.js"></script>
     <link href="lib/dist/pnotify.custom.min.css" media="all" rel="stylesheet" type="text/css" />
+
 </head>
 
 <body>
@@ -20,7 +22,7 @@
     </ul>
     <div class="tabbable">
         <ul class="nav nav-tabs">
-            <li class="active"><a class="glyphicon glyphicon-plus" href="#carro" data-toggle="tab"  id="abaCarro"> Carro </a></li>
+            <li class="active"><a class="glyphicon glyphicon-plus" href="#carro" data-toggle="tab" id="abaCarro"> Carro </a></li>
             <li><a class="glyphicon glyphicon-asterisk" href="#simulacao" data-toggle="tab" id="abaSimulacao"> Simulação </a></li>
         </ul>
         <div class="tab-content">
@@ -31,7 +33,7 @@
                         <br>
                         <label class="col-md-1 control-label" for="fabricante">Fabricante</label>
                         <div class="col-md-11">
-                            <input id="fabricante" name="fabricante" placeholder="Fabricante" type="text"class="form-control input-md" required="" maxlength="50">
+                            <input id="fabricante" name="fabricante" placeholder="Fabricante" type="text" class="form-control input-md" required="" maxlength="50">
                             <br>
                         </div>
                     </div>
@@ -118,7 +120,7 @@
                         <td class="cor">{{cor}}</td>
                         <td class="valorDiaria">{{valorDiaria}}</td>
                         <td class="valorKm">{{valorKm}}</td>
-                          <td>
+                        <td>
                             <button type="button" class="btn btnEditarCarro">Editar</button>
                             <button type="button" class="btn btn-danger btnExcluirCarro">Excluir</button>
                         </td>
@@ -178,11 +180,23 @@
                         <div class="col-md-7 form-group" id="trajeto">
                             <div class="row">
                                 <label class="control-label" for="origem">Origem</label>
-                                <input class="form-control" type="text" id="origem" name="origem" placeholder="Origem" required>
+                                <br>
+                                <input class="form-control" type="text" id="origem" name="origem" placeholder="Origem" required> 
+                                <button type="button" class="btn btn-primary" id="btnMeuLocal">Meu local</button>
                             </div>
+ 
+                               
                             <div class="row">
                                 <label class="control-label" for="destino">Destino</label>
                                 <input class="form-control" type="text" id="destino" name="destino" placeholder="Destino" required>
+                            </div>
+                            <div class="row">
+                                <label class="control-label" for="distancia">Distancia (em Km)</label>
+                                <input class="form-control" type="text" id="distancia" name="distancia" required disabled>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <button type="button" class="btn btn-primary" id="btnCalcularDistancia">Calcular Distância</button>
                             </div>
                         </div>
                     </div>
@@ -207,6 +221,7 @@
                             <th>Data Fim</th>
                             <th>Origem</th>
                             <th>Destino</th>
+                            <th>Distância</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
@@ -223,6 +238,7 @@
                         <td class="dateFim">{{dateFim}}</td>
                         <td class="origem">{{origem}}</td>
                         <td class="destino">{{destino}}</td>
+                        <td class="distancia">{{distancia}}</td>
                         <td>
                             <button type="button" class="btn btnEditarSimulacao">Editar</button>
                             <button type="button" class="btn btn-danger btnExcluirSimulacao">Excluir</button>

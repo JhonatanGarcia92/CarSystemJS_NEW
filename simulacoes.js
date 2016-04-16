@@ -12,7 +12,7 @@ var SIMULACAO = (function(){
         return document.getElementById(id);
     }
 
-    function Simulacao (codCarro, cliNome, op, dtInicio, dtFim, ori, dst){
+    function Simulacao (codCarro, cliNome, op, dtInicio, dtFim, ori, dst, distancia){
         idSimulacao++;
         simulacao = {}
         simulacao.id = idSimulacao;
@@ -23,6 +23,7 @@ var SIMULACAO = (function(){
         simulacao.dateFim = dtFim;
         simulacao.origem = ori;
         simulacao.destino = dst;
+        simulacao.distancia = distancia;
         simulacao.toString = function(){
           return this.nomeCliente + ' ' + this.opcao;
         }
@@ -79,9 +80,19 @@ var SIMULACAO = (function(){
         btnSalvarSimulacao.addEventListener('click', clickSalvarSimulacao);
         var btnCancelarSimulacao = $$('btnCancelarSimulacao');
         btnCancelarSimulacao.addEventListener('click', clickCancelarSimulacao);
+        $$('btnCalcularDistancia').addEventListener('click', clickCalcularDistancia);
+        $$('btnMeuLocal').addEventListener('click', clickMeuLocal);
+    }
+
+    function clickMeuLocal(evento){
+        console.log('clickMeuLocal');
+        evento.preventDefault();
+        var campoOrigem = $$('origem');
+        GEOLOCALIZACAO.obterMeuLocal( campoOrigem );
     }
 
     function clickAdicionarSimulacao (evento){
+        console.log('clickAdicionarSimulacao');
         evento.preventDefault();
         var simulacao = novaSimulacao();
         if( preenchimentoCorreto() ){
@@ -99,6 +110,15 @@ var SIMULACAO = (function(){
         }
     }
 
+    function clickCalcularDistancia(evento){
+        console.log('clickCalcularDistancia');
+        evento.preventDefault();
+        var campoOrigem = $$('origem');
+        var campoDestino = $$('destino');
+        var campoDistancia = $$('distancia');
+        GEOLOCALIZACAO.calculaDistanciaDoPercurso( campoOrigem, campoDestino, campoDistancia );
+    }
+
     function mostraMensagemDePreenchimentoIncorreto(){
         camposInvalidos = document.querySelectorAll('#formNovaSimulacao .form-control:invalid');
         mensagem = "Campos Preenchidos Incorretamente: \n\n";
@@ -107,10 +127,7 @@ var SIMULACAO = (function(){
             label = document.querySelector('#formNovaSimulacao label[for='+campo.id+']').innerText;
             mensagem = mensagem + label + ":  "+ campo.validationMessage + "\n";
         }
-        new PNotify({
-            title: 'Campos Obrrigatórios',
-            text: mensagem
-        });
+        alert(mensagem);
     }
 
     function preenchimentoCorreto(){
@@ -118,6 +135,7 @@ var SIMULACAO = (function(){
     }
 
     function clickExcluirSimulacao (evento){
+        console.log('clickExcluirSimulacao');
         evento.preventDefault();
         idDaLista = descobreIdNoArrayDeSimulacoes(evento);
         simulacaoAExcluir = simulacoes[idDaLista];
@@ -174,6 +192,7 @@ var SIMULACAO = (function(){
     }
 
     function clickEditarSimulacao (evento){
+        console.log('clickEditarSimulacao');
         evento.preventDefault();
         idDaLista = descobreIdNoArrayDeSimulacoes(evento);
         simulacaoEmEdicao = simulacoes[idDaLista];
@@ -184,11 +203,13 @@ var SIMULACAO = (function(){
     }
 
     function clickCancelarSimulacao (evento){
+        console.log('clickCancelarSimulacao');
         evento.preventDefault();
         limpaFormSimulacao();
     }  
 
     function clickSalvarSimulacao (evento){
+        console.log('clickSalvarSimulacao');
         evento.preventDefault();
         salvarEdicao(simulacaoEmEdicao);
         limpaFormSimulacao();
@@ -203,6 +224,7 @@ var SIMULACAO = (function(){
         simulacao.dateFim = $$('dateFim').value;
         simulacao.origem = $$('origem').value;
         simulacao.destino = $$('destino').value;
+        simulacao.distancia = $$('distancia').value;
     }
 
     function descobreIdNoArrayDeSimulacoes (evento){
@@ -235,6 +257,7 @@ var SIMULACAO = (function(){
         $$('dateFim').value = '';
         $$('origem').value = '';
         $$('destino').value = '';
+        $$('distancia').value = '';
         $$('btnAdicionarSimulacao').classList.remove('hide');
         $$('btnSalvarSimulacao').classList.add('hide');
         $$('btnCancelarSimulacao').classList.add('hide');
@@ -248,7 +271,8 @@ var SIMULACAO = (function(){
             $$('dateInicio').value,
             $$('dateFim').value,
             $$('origem').value,
-            $$('destino').value
+            $$('destino').value,
+            $$('distancia').value
         );
         return simulacao;
     }
@@ -266,6 +290,7 @@ var SIMULACAO = (function(){
         $$('dateFim').value = simulacao.dateFim
         $$('origem').value = simulacao.origem ;
         $$('destino').value = simulacao.destino;
+        $$('distancia').value = simulacao.distancia;
     }
 
     function excluirSimulacao (idDaLista){

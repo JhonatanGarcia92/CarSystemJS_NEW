@@ -103,7 +103,11 @@ var CARRO = (function() {
             label = document.querySelector('#formNovoCarro label[for=' + campo.id + ']').innerText;
             mensagem = mensagem + label + ":  " + campo.validationMessage + "\n";
         }
-        alert(mensagem);
+        new PNotify({
+            title: 'Campos Obrigatórios',
+            text: mensagem,
+            type: 'error'
+        });
     }
 
     function preenchimentoCorreto() {

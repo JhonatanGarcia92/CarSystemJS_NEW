@@ -85,14 +85,12 @@ var SIMULACAO = (function(){
     }
 
     function clickMeuLocal(evento){
-        console.log('clickMeuLocal');
         evento.preventDefault();
         var campoOrigem = $$('origem');
         GEOLOCALIZACAO.obterMeuLocal( campoOrigem );
     }
 
     function clickAdicionarSimulacao (evento){
-        console.log('clickAdicionarSimulacao');
         evento.preventDefault();
         var simulacao = novaSimulacao();
         if( preenchimentoCorreto() ){
@@ -111,7 +109,6 @@ var SIMULACAO = (function(){
     }
 
     function clickCalcularDistancia(evento){
-        console.log('clickCalcularDistancia');
         evento.preventDefault();
         var campoOrigem = $$('origem');
         var campoDestino = $$('destino');
@@ -127,7 +124,11 @@ var SIMULACAO = (function(){
             label = document.querySelector('#formNovaSimulacao label[for='+campo.id+']').innerText;
             mensagem = mensagem + label + ":  "+ campo.validationMessage + "\n";
         }
-        alert(mensagem);
+        new PNotify({
+            title: 'Campos Obrigatórios',
+            text: mensagem,
+            type: 'error'
+        });
     }
 
     function preenchimentoCorreto(){
@@ -135,7 +136,6 @@ var SIMULACAO = (function(){
     }
 
     function clickExcluirSimulacao (evento){
-        console.log('clickExcluirSimulacao');
         evento.preventDefault();
         idDaLista = descobreIdNoArrayDeSimulacoes(evento);
         simulacaoAExcluir = simulacoes[idDaLista];

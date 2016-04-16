@@ -30,16 +30,32 @@ var GEOLOCALIZACAO = (function() {
     function executaSeErroObtido(error) {
         switch (error.code) {
             case error.PERMISSION_DENIED:
-                alert("Usuário rejeitou a solicitação de Geolocalização.");
+                new PNotify({
+                    title: 'Usuário rejeitou a solicitação de Geolocalização.',
+                    text: mensagem,
+                    type: 'error'
+                });
                 break;
             case error.POSITION_UNAVAILABLE:
-                alert("Localização indisponível.");
+                new PNotify({
+                    title: 'Localização indisponível.',
+                    text: mensagem,
+                    type: 'error'
+                });
                 break;
             case error.TIMEOUT:
-                alert("A requisição expirou.");
+                new PNotify({
+                    title: 'A requisição expirou.',
+                    text: mensagem,
+                    type: 'error'
+                });
                 break;
             case error.UNKNOWN_ERROR:
-                alert("Algum erro desconhecido aconteceu.");
+                new PNotify({
+                    title: 'Algum erro desconhecido aconteceu.',
+                    text: mensagem,
+                    type: 'error'
+                });
                 break;
         }
     }
@@ -51,7 +67,11 @@ var GEOLOCALIZACAO = (function() {
             campoOrigem = campoParaIncluirLocal;
             navigator.geolocation.getCurrentPosition(executaSeLocalObtido, executaSeErroObtido);
         } else {
-            alert("Seu browser não suporta Geolocalização.");
+            new PNotify({
+                title: 'Seu browser não suporta Geolocalização.',
+                text: mensagem,
+                type: 'error'
+            });
         }
     };
 
@@ -76,7 +96,11 @@ var GEOLOCALIZACAO = (function() {
                 campoOrigem.value = respostaObj.originAddresses[0];
                 campoDestino.value = respostaObj.destinationAddresses[0];
             } else {
-                alert('Não foi possível calcular a distância entre origem e destino. Verifique se escreveu o nome da cidade corretamente.');
+                new PNotify({
+                    title: 'Não foi possível calcular a distância entre origem e destino. Verifique se escreveu o nome da cidade corretamente.',
+                    text: mensagem,
+                    type: 'error'
+                });
             }
         });
     };
